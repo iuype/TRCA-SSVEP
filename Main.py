@@ -77,7 +77,7 @@ class TRCA():
         if dataroot is None:
             print("dataroot error -->: ",dataroot)
 
-        datapath = glob.glob(os.path.join(dataroot,"xxrPC","*"))    # ['.\\datasets\\xxrAR\\EEG.mat']
+        datapath = glob.glob(os.path.join(dataroot,"xxrAR","*"))    # ['.\\datasets\\xxrAR\\EEG.mat']
 
         oEEG = loadmat(datapath[0])
 
@@ -121,7 +121,7 @@ class TRCA():
         # 9 ： 1 分割训练集与测试集
         train_X, test_X, train_y, test_y = train_test_split(all_data,
                                                             all_label,
-                                                            test_size = 0.1,
+                                                            test_size = 0.2,
                                                             random_state = 0)
         return train_X, test_X, train_y, test_y
 
@@ -230,6 +230,18 @@ class TRCA():
         print(tot_correct / tot)
 
 
+        tot = 0
+        tot_correct = 0
+
+        for i in range(self.traindata.shape[0]):
+            pre_lb , lb = self.inference(self.traindata[i]),self.trainlabel[i,0]
+            if pre_lb == lb:
+                tot_correct += 1
+            tot += 1
+
+        print(tot_correct / tot)
+
+
     def inference(self, X): # (Nm ,Nc, data_length)
         r = np.zeros((self.Nm, self.Nf))
 
@@ -271,8 +283,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--epochs", type=int, default=100, help="number of epochs")
 
-    parser.add_argument("--dataroot", type=str, default=os.path.join(".","datasets"), help="the folder of data")
-    parser.add_argument("--filter_order", type=int, default=5, help="order of filter")
+    parser.add_argument("--dataroot", type=str, default=os.path.join(".", "datasets"), help="the folder of data")
+    parser.add_argument("--filter_order", type=int, default=8, help="order of filter")
     parser.add_argument("--Nm", type=int, default = 7, help="number of bank")
     parser.add_argument("--data_length", type=float, default=0.5, help="task time points")
     parser.add_argument("--Nf", type=int, default=8, help="number of stimulus")
@@ -285,8 +297,3 @@ if __name__ == '__main__':
     trca.fit()
 
     print("done!")
-
-
-
-
-
