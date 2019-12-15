@@ -240,7 +240,7 @@ class TRCA():
         Pn = np.zeros(self.Nf)
         for n in range(self.Nf):
             for m in range(self.Nm):
-                Pn[n] += ((m+1) ** (-1.25)) * r[m, n]
+                Pn[n] += ((m+1) ** (-1.25)) * (r[m, n] ** 2)
 
         pre_label = np.argmax(Pn)
 
