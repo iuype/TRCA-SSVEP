@@ -106,6 +106,7 @@ class TRCA():
                 int(self.downsample_rate*self.data_length) # 数据长度
             )
         )
+
         all_label = np.zeros((160, 1))   # [0,1,2,...,Nf] 取值范围
 
         for idx in range(event.shape[0]):
@@ -252,7 +253,7 @@ class TRCA():
         Pn = np.zeros(self.Nf)
         for n in range(self.Nf):
             for m in range(self.Nm):
-                Pn[n] += ((m+1) ** (-1.25)) * (r[m, n] ** 2)
+                Pn[n] += ((m+1) ** (-1.25) + 0.25 ) * (r[m, n] ** 2)
 
         pre_label = np.argmax(Pn)
 
